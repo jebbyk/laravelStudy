@@ -12,21 +12,20 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         //
-
         $data = [
-        [
-            
-            'name' => 'unknown author',
-            'email' => 'unknown@author.com',
-            'password' => bcrypt(str_random(16)),
-        ],
-        [
-            'name' => 'Author', 
-            'email' => 'author@gmail.com',
-            'password' => bcrypt('123123'),
-        ],
-    ];
+            [
 
-    DB::table('users')->insert($data);
+                'name' => 'unknown author',
+                'email' => 'unknown@author.com',
+                'password' => bcrypt(str_random(16)),
+            ],
+            [
+                'name' => 'Author',
+                'email' => 'author@gmail.com',
+                'password' => bcrypt('123123'),
+            ],
+        ];
+
+        DB::table('users')->insert($data);
     }
 }
