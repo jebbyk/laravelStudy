@@ -20,6 +20,13 @@ Route::group(['namespace' => 'Blog', 'prefix'=>'blog'], function(){
 });
 
 
+Route::group(['namespace'=>'Blog\Admin', 'prefix' => 'admin/blog'], function () {
+
+    $methods = ['index', 'edit', 'store', 'update', 'create',];
+    Route::resource('categories', 'CategoryController')->only($methods)->names('blog.admin.categories');
+
+});
+
 //Route::resource('rest', 'RestTestController')->names('restTest');
 
 Auth::routes();
