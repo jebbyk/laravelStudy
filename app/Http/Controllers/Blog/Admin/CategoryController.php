@@ -21,7 +21,7 @@ class CategoryController extends BaseAdminController
 
        $paginator = BlogCategory::paginate(5);
 
-       return view('blog.admin.category.index', compact('paginator'));
+       return view('blog.admin.categories.index', compact('paginator'));
     }
 
     /**
@@ -69,11 +69,10 @@ class CategoryController extends BaseAdminController
         //
         //dd(__METHOD__);
 
-
         $item = BlogCategory::findOrFail($id);//dont user findOrFail in big projects (if you gettering information from different places)
         $categoryList = BlogCategory::all();
 
-        return view('blog.admin.category.edit', compact('item', 'categoryList' ));
+        return view('blog.admin.categories.edit', compact('item', 'categoryList' ));
     }
 
     /**
@@ -86,7 +85,20 @@ class CategoryController extends BaseAdminController
     public function update(Request $request, $id)
     {
         //
-        dd(__METHOD__, $request->all(),$id);
+        //dd(__METHOD__, $request->all(),$id);
+        $item = BlogCategory::find($id);
+        if(empty($item)){
+            return back()->withErrors(['msg' => "data id  = [{$id}] not found"])->withInput();//will return to the previous page with saved input
+        }
+
+        $data = $request->all();
+        $result = $item->fill($data)->save();
+
+        if($result){
+            return redirect()->route('blog.admin.categories.edit', $item->id)->with(['success' => 'Successfuly saved']);
+        }else{
+            return back()->withErrors(['msg' => "Saving error"])->withInput();
+        }
 
 
     }
