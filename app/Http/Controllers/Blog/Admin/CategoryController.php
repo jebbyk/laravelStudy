@@ -86,18 +86,24 @@ class CategoryController extends BaseAdminController
     {
         //
         //dd(__METHOD__, $request->all(),$id);
-        $item = BlogCategory::find($id);
-        if(empty($item)){
-            return back()->withErrors(['msg' => "data id  = [{$id}] not found"])->withInput();//will return to the previous page with saved input
+        $item = BlogCategory::find($id);//check for item existing
+        if(empty($item)){//if no item then return to the previous page
+            return back()
+                ->withErrors(['msg' => "data id  = [{$id}] not found"])
+                ->withInput();//will return to the previous page with saved input
         }
 
-        $data = $request->all();
-        $result = $item->fill($data)->save();
+        $data = $request->all();//gettering data from our request (row)
+        $result = $item
+            ->fill($data)//will automaticaly find attributes to bee updated
+            ->save();
 
         if($result){
             return redirect()->route('blog.admin.categories.edit', $item->id)->with(['success' => 'Successfuly saved']);
         }else{
-            return back()->withErrors(['msg' => "Saving error"])->withInput();
+            return back()
+                ->withErrors(['msg' => "Saving error"])
+                ->withInput();
         }
 
 

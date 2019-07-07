@@ -62,7 +62,7 @@
                                 id = "description"
                                 class = "form-control"
                                 rows = "3">
-                                {{ $item->description }}
+                                {{ old('description', $item->description) }}{{-- for saving input for turning back --}}
                             </textarea>
                         </div>
                     </div>
