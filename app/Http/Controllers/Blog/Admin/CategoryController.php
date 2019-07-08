@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Blog\Admin;
 
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Blog\Admin\BaseAdminController;
+use App\Http\Requests\BlogCategoryCreateRequest;
 use App\Http\Requests\BlogCategoryUpdateRequest;
+use App\Http\Controllers\Blog\Admin\BaseAdminController;
 
 class CategoryController extends BaseAdminController
 {
@@ -33,7 +34,12 @@ class CategoryController extends BaseAdminController
     public function create()
     {
         //
-        dd(__METHOD__);
+        //dd(__METHOD__);
+
+        $item = new BlogCategory();
+        $categoryList = BlogCategory::all();
+
+        return view('blog.admin.categories.create', compact('item', 'categoryList'));
     }
 
     /**
@@ -42,10 +48,25 @@ class CategoryController extends BaseAdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BlogCategoryCreateRequest $request)
     {
         //
-        dd(__METHOD__);
+        //dd(__METHOD__);
+        $data = $request->input();
+        if(empty($data['slug'])){
+            $data['slug'] = str_slug($data['title']);
+        }
+
+        $item = new BlogCategory($data);
+        $item->save();
+
+        if($item){
+            return redirect()->route('blog.admin.categories.create', [$item->id])
+            ->with(['success' => 'Successfuly saved']);
+        } else {
+            return back()->withErrors(['msg' => 'Saving error'])
+            ->withInput();
+        }
     }
 
     /*/**
@@ -104,9 +125,15 @@ class CategoryController extends BaseAdminController
         }
 
         $data = $request->all();//gettering data from our request (row)
-        $result = $item
+
+        if(empty($data['slug'])){
+            $data['slug'] = str_slug($data['title']);
+        }
+
+        $result = $item->update($data);
+        /*$result = $item
             ->fill($data)//will automaticaly find attributes to bee updated
-            ->save();
+            ->save();*/
 
         if($result){
             return redirect()->route('blog.admin.categories.edit', $item->id)->with(['success' => 'Successfuly saved']);
