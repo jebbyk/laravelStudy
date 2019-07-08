@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Blog\Admin;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Blog\Admin\BaseAdminController;
+use App\Http\Requests\BlogCategoryUpdateRequest;
 
 class CategoryController extends BaseAdminController
 {
@@ -82,10 +83,19 @@ class CategoryController extends BaseAdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BlogCategoryUpdateRequest $request, $id)
     {
         //
         //dd(__METHOD__, $request->all(),$id);
+
+
+       // $validatedData = $this->validate($request, $rules);
+
+
+        //dd($validatedData);
+
+
+
         $item = BlogCategory::find($id);//check for item existing
         if(empty($item)){//if no item then return to the previous page
             return back()
