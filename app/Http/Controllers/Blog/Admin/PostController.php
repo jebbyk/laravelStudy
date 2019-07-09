@@ -1,13 +1,30 @@
 <?php
 
-namespace App\Http\Controllers\Blog;
+namespace App\Http\Controllers\Blog\Admin;
 
 use Illuminate\Http\Request;
-use App\Models\BlogPost;
-//use App\Http\Controllers\Controller;
+use App\Http\Controllers\Blog\Admin\BaseAdminController;
+use App\Repositories\BlogPostRepository;
+/**
+ * @package App\Http\Controllers\Blog\Admin
+ */
 
-class PostController extends BaseController
+class PostController extends BaseAdminController
 {
+
+    /**
+     * @var BlogPostRepository;
+     */
+
+     private $blogPostRepository;
+
+     public function __construct()
+     {
+         parent::__construct();
+
+         $this->blogPostRepository = app(BlogPostRepository::class);
+     }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,10 +32,8 @@ class PostController extends BaseController
      */
     public function index()
     {
-        //
-        $items = BlogPost::all();//get all rows from table blog_postphp
-
-        return view('blog.posts.index', compact('items'));
+        $paginator = $this->blogPostRepository->getAllWithPaginate();
+        return view('blog.admin.posts.index', compact('paginator'));
     }
 
     /**

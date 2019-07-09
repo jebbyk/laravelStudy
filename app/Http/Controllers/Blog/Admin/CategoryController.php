@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Blog\Admin;
 
 use App\Models\BlogCategory;
-use Illuminate\Http\Request;
 use App\Http\Requests\BlogCategoryCreateRequest;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Http\Controllers\Blog\Admin\BaseAdminController;
@@ -19,6 +18,7 @@ class CategoryController extends BaseAdminController
     public function __construct()
     {
         parent::__construct();
+
         $this->blogCategoryRepository = app(BlogCategoryRepository::class);
     }
 

@@ -15,18 +15,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['namespace' => 'Blog', 'prefix'=>'blog'], function(){
-    Route::resource('posts', 'PostController')->names('blog.posts');
-});
+/*Route::group(['namespace' => 'Blog', 'prefix'=>'blog'], function(){
+    Route::resource('posts', 'PostController')
+    ->names('blog.posts');
+});*/
 
 
 Route::group(['namespace'=>'Blog\Admin', 'prefix' => 'admin/blog'], function () {
 
     $methods = ['index', 'edit', 'store', 'update', 'create',];
-    //creates functuionality ONLY from $METHODS
-    Route::resource('categories', 'CategoryController')->only($methods)->names('blog.admin.categories');
+    Route::resource('categories', 'CategoryController')
+    ->only($methods)
+    ->names('blog.admin.categories');
+
+    Route::resource('posts', 'PostController')
+    ->except(['show'])
+    ->names('blog.admin.posts');
 
 });
+
 
 //Route::resource('rest', 'RestTestController')->names('restTest');
 

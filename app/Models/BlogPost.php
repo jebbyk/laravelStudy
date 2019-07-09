@@ -9,4 +9,16 @@ class BlogPost extends Model
 {
     //
     use SoftDeletes;//will show only rows that hasnt deleted_at attribute setted (if gettering data via ::all() function)
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(BlogCategory::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Realations\BelongTo
+     */
 }
