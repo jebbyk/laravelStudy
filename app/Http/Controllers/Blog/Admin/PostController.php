@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Blog\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Blog\Admin\BaseAdminController;
 use App\Repositories\BlogPostRepository;
+use App\Repositories\BlogCategoryRepository;
+
 /**
  * @package App\Http\Controllers\Blog\Admin
  */
@@ -15,14 +17,19 @@ class PostController extends BaseAdminController
     /**
      * @var BlogPostRepository;
      */
-
      private $blogPostRepository;
+
+     /**
+      *@var BlogCategoryRepository;
+      */
+      private $blogCategoryRepository;
 
      public function __construct()
      {
          parent::__construct();
 
          $this->blogPostRepository = app(BlogPostRepository::class);
+         $this->blogCategoryRepository = app(BlogCategoryRepository::class);
      }
 
     /**
@@ -76,6 +83,14 @@ class PostController extends BaseAdminController
      */
     public function edit($id)
     {
+        $item = $this->blogPostRepository->getEdit($id);
+        if(empty($item)){
+            abort(404);
+        }
+
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
+
+        return view('blog.admin.posts.edit', compact('item', 'categoryList'));
         //
     }
 
@@ -89,6 +104,7 @@ class PostController extends BaseAdminController
     public function update(Request $request, $id)
     {
         //
+        dd(__METHOD__, $request->all(), $id);
     }
 
     /**
@@ -100,5 +116,6 @@ class PostController extends BaseAdminController
     public function destroy($id)
     {
         //
+        dd(__METHOD__, $id, request()->all());
     }
 }

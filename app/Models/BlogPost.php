@@ -15,6 +15,7 @@ class BlogPost extends Model
      */
     public function category()
     {
+        //принадлежит
         return $this->belongsTo(BlogCategory::class);
     }
 
