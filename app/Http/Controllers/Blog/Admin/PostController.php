@@ -105,8 +105,6 @@ class PostController extends BaseAdminController
      */
     public function update(BlogPostUpdateRequest $request, $id)
     {
-        //
-        //dd(__METHOD__, $request->all(), $id);
         $item = $this->blogPostRepository->getEdit($id);
 
         if(empty($item)){
@@ -117,14 +115,8 @@ class PostController extends BaseAdminController
 
         $data = $request->all();
 
-        if(empty($data['slug'])){
-            $data['slug'] = \Str::slug($data['title']);
-        }
-        if(empty($item->published_at) && $data['is_published']){
-            $data['published_at'] = Carbon::now();
-        }
-
         $result = $item->update($data);
+
 
         if($result){
             return redirect()

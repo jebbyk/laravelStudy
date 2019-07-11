@@ -63,10 +63,7 @@ class CategoryController extends BaseAdminController
     {
         //
         //dd(__METHOD__);
-        $data = $request->input();
-        if(empty($data['slug'])){
-            $data['slug'] = str_slug($data['title']);
-        }
+
 
         $item = new BlogCategory($data);
         $item->save();
@@ -121,7 +118,6 @@ class CategoryController extends BaseAdminController
      */
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        //$item = BlogCategory::find($id);//check for item existing
 
         $item = $this->blogCategoryRepository->getEdit($id);
 
@@ -133,14 +129,8 @@ class CategoryController extends BaseAdminController
 
         $data = $request->all();//gettering data from our request (row)
 
-        if(empty($data['slug'])){
-            $data['slug'] = str_slug($data['title']);
-        }
 
         $result = $item->update($data);
-        /*$result = $item
-            ->fill($data)//will automaticaly find attributes to bee updated
-            ->save();*/
 
         if($result){
             return redirect()->route('blog.admin.categories.edit', $item->id)->with(['success' => 'Successfuly saved']);
