@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
+use App\Models\BlogPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Repositories\BlogPostRepository;
+use App\Http\Requests\BlogPostCreateRequest;
 use App\Http\Requests\BlogPostUpdateRequest;
 use App\Repositories\BlogCategoryRepository;
 use App\Http\Controllers\Blog\Admin\BaseAdminController;
@@ -53,6 +55,10 @@ class PostController extends BaseAdminController
     public function create()
     {
         //
+        $item = new BlogPost();
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
+
+        return view('blog.admin.posts.edit', compact('item', 'categoryList'));
     }
 
     /**
@@ -61,9 +67,19 @@ class PostController extends BaseAdminController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BlogPostCreateRequest $request)
     {
         //
+        $data = $request->input();
+        $item = (new BlogPost())->create($data);
+
+        if($item){
+            return redirect()->route('blog.admin.posts.edit', [$item->id])
+            ->with(['success' => "Saved"]);
+        }else{
+            return back()->withErrors(['msg' => 'SavingError'])
+            ->withInput();
+        }
     }
 
     /**

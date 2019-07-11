@@ -10,8 +10,10 @@ class BlogPost extends Model
     //
     use SoftDeletes;//will show only rows that hasnt deleted_at attribute setted (if gettering data via ::all() function)
 
+    const UNKNOWN_USER = 1;
+
     protected $fillable = [
-        'title', 'slug', 'category_id', 'excerpt', 'content_raw', 'is_published', 'pulbished_at', 'user_id'
+        'title', 'slug', 'category_id', 'excerpt', 'content_raw', 'is_published', 'pulbished_at', /*'user_id'*/
     ];
 
     /**

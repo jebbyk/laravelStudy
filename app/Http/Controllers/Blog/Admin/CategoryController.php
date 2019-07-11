@@ -48,7 +48,7 @@ class CategoryController extends BaseAdminController
 
         $item = new BlogCategory();
         //$categoryList = BlogCategory::all();
-        $categoryList = $this->blogCategoryRepository->getForCombobox();
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
 
         return view('blog.admin.categories.create', compact('item', 'categoryList'));
     }
@@ -65,6 +65,7 @@ class CategoryController extends BaseAdminController
         //dd(__METHOD__);
 
 
+        $data = $request->input();
         $item = new BlogCategory($data);
         $item->save();
 
