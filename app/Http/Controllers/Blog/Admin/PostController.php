@@ -154,6 +154,13 @@ class PostController extends BaseAdminController
     public function destroy($id)
     {
         //
-        dd(__METHOD__, $id, request()->all());
+        $result = BlogPost::destroy($id);
+        if($result){
+            return redirect()
+            ->route('blog.admin.posts.index')
+            ->with(['success'=>"Data id[$id] deleted"]);
+        }else{
+            return back()->withErrors(['msg' => 'Deleting error']);
+        }
     }
 }
